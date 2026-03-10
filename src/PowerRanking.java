@@ -1,177 +1,88 @@
-import components.simplewriter.SimpleWriter;
-import components.simplewriter.SimpleWriter1L;
+import components.sequence.Sequence;
 
-/**
- * Proof of concept.
- */
-public class PowerRanking {
-    /**
-     * Representation of {@code this}.
-     */
-    private Team[] ranking;
-    /**
-     * Number of teams in {@code this}.
-     */
-    private int teams;
+public interface PowerRanking extends PowerRankingKernel {
 
     /**
-     * Constructor.
-     *
-     * @param teams
-     *            Number of teams in {@code this}
-     */
-    public PowerRanking(int teams) {
-        this.teams = teams;
-        this.ranking = new Team[teams];
-    }
-
-    /**
-     * No-argument constructor.
-     */
-    public PowerRanking() {
-        this.teams = 0;
-        this.ranking = new Team[this.teams];
-    }
-
-    /**
-     * Adds a team to {@code this}.
+     * Returns rank of team in {@code this}.
      *
      * @param t
-     *            team to add to {@code this}.
-     * @ensures t is in {@code this}
+     *            Team whose rank is to be returned
+     * @requires this /= {} and team is in {@code this}
+     * @return rank of team
      */
-    public void addTeam(Team t) {
-
-        Team[] tempArr = new Team[this.teams + 1];
-        boolean added = false;
-        boolean equality = false;
-        if (this.teams == 0) {
-            this.ranking = new Team[1];
-            this.ranking[0] = t;
-            this.teams++;
-            return;
-        }
-        for (int i = 0; i < this.teams; i++) {
-            equality = (this.ranking[i].points() < t.points());
-            if (!added && !equality) {
-                tempArr[i] = this.ranking[i];
-            } else if (!added && equality) {
-                tempArr[i] = t;
-            } else {
-                tempArr[i] = this.ranking[i - 1];
-            }
-        }
-
-        if (!added) {
-            tempArr[this.teams] = t;
-            this.ranking = tempArr;
-        } else {
-            this.ranking = tempArr;
-        }
-        this.teams++;
-
-    }
+    int getRank(Team t);
 
     /**
-     * Removes a team from {@code this}.
+     * Returns top n teams in {@code this}.
      *
-     * @param t
-     *            team to remove from {@code this}.
-     * @requires this /= {}
-     * @ensures t is not in {@code this}
-     *
+     * @param n
+     *            Teams to be returned
+     * @requires n <= |this|
+     * @return Sequence containing top n teams in {@code this}
+     * @ensures |getTopN| = n and getTopN is subset of this
      */
-    public void removeTeam(Team t) {
-        if (this.teams == 0) {
-            return;
-        }
-        Team[] tempArr = new Team[this.teams - 1];
-        int j = 0;
-        for (int i = 0; i < this.teams; i++) {
-            boolean equality = (this.ranking[i].name().equals(t.name()));
-            if (!equality) {
-                tempArr[j] = this.ranking[i];
-                j++;
-            }
-        }
-        this.ranking = new Team[this.teams - 1];
-        for (int i = 0; i < (this.teams - 1); i++) {
-            this.ranking[i] = tempArr[i];
-        }
-        this.teams--;
-    }
-
-    /**
-     * Reports if t is in {@code this}.
-     *
-     * @param t
-     *            team to check if in {@code this}.
-     * @return team is in {@code this}
-     */
-    public boolean hasTeam(Team t) {
-        boolean fnd = false;
-        for (Team team : this.ranking) {
-            if (team.name().equals(t.name())) {
-                fnd = !fnd;
-            }
-        }
-        return fnd;
-    }
+    Sequence<Team> getTopN(int n);
 
     /**
      * Returns highest ranked team in {@code this}.
      *
      * @requires this /= {}
-     * @return team is in {@code this}
+     * @return highest ranked team
+     * @ensures getHighestRanked = [highest ranked team in this]
      */
-    public Team getHighestRanked() {
-        return this.ranking[0];
-    }
+    Team getHighestRanked();
 
     /**
-     * Returns cardinality of {@code this}.
+     * Returns lowest ranked team in {@code this}.
      *
-     * @return |this|
+     * @requires this /= {}
+     * @return lowest ranked team
+     * @ensures getLowestRanked = [lowest ranked team in this]
      */
-    public int size() {
-        return this.teams;
-    }
+    Team getLowestRanked();
 
     /**
-     * Main method.
+     * Returns rank of team in {@code this}.
      *
-     * @param args
+     * @param t
+     *            Team whose rank is to be set
+     * @param rank
+     *            Rank of which team is to be set to
+     * @updates this
+     * @ensures [team t has rank 'rank' in this]
+     * @requires this /= {} and team is in {@code this}
      */
-    public static void main(String[] args) {
-        PowerRanking pr = new PowerRanking();
+    void setRank(Team t, int rank);
 
-        Team aik = new Team("AIK", 95);
-        Team dif = new Team("Djurgården", 2);
-        Team hif = new Team("Hammarby", 2);
-        SimpleWriter out = new SimpleWriter1L();
-        out.println("testing component");
+    /**
+     * Bumps team up one rank.
+     *
+     * @param t
+     *            Team whose rank is to be bumped up
+     * @updates this
+     * @requires this /= {} and team is in {@code this}
+     * @ensures team rank += 1
+     */
+    void bumpUp(Team t);
 
-        out.println("adding teams");
-        pr.addTeam(aik);
-        pr.addTeam(dif);
-        pr.addTeam(hif);
+    /**
+     * Bumps team down one rank.
+     *
+     * @param t
+     *            Team whose rank is to be bumped down
+     * @updates this
+     * @requires this /= {} and team is in {@code this}
+     * @ensures team rank -= 1
+     */
+    void bumpDown(Team t);
 
-        out.println("size: " + pr.size());
+    /**
+     * Returns Sequence<Team> representation of this.
+     *
+     * @requires this /= {}
+     * @return Sequence<Team> representation of this.
+     * @ensures |orderedList| = |this| and orderedList is subset of this
+     */
+    Sequence<Team> orderedList();
 
-        out.println("\nHighest Ranked Team: " + pr.getHighestRanked().name());
-
-        out.println(
-                "testing if ranking contains the most beautiful team in the world (aik) "
-                        + pr.hasTeam(aik));
-
-        out.println("\nremoving djurgården");
-        pr.removeTeam(dif);
-
-        out.println("size after removal: " + pr.size());
-        out.println(
-                "testing if dif was properly removed or not, false means it was removed: "
-                        + pr.hasTeam(dif));
-
-        out.close();
-    }
 }
