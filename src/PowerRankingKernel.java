@@ -26,7 +26,7 @@ public interface PowerRankingKernel extends Standard<PowerRanking>, Iterable<Tea
      * @requires {@code t} is in {@code this}
      * @ensures t is not in {@code this} and 
      * [descending order of {@code this} is preserved]
-     * and |{@code this}| = |{#@code this}| - 1
+     * and |{@code this}| = |#{@code this}| - 1
      *
      */
     void removeTeam(Team t);
