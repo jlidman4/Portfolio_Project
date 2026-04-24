@@ -15,10 +15,12 @@ public abstract class PowerRankingSecondary implements PowerRanking {
      */
     @Override
     public int getRank(Team t) {
+        assert t != null : "Violation of: t is not null";
+        assert this.getTeamList().length() > 0 : "Violation of: this /= {}";
+        assert this.hasTeam(t) : "Violation of: t is in this";
         int rank = -1;
-        Team.CompareTeams comparator = new Team.CompareTeams();
         for (int i = 0; i < this.getTeamList().length(); i++) {
-            if (comparator.compare(t, this.getTeamList().entry(i)) == 0) {
+            if (this.getTeamList().entry(i).equals(t)) {
                 rank = i;
             }
         }
@@ -56,6 +58,7 @@ public abstract class PowerRankingSecondary implements PowerRanking {
      */
     @Override
     public Team getHighestRanked() {
+        assert this.getTeamList().length() > 0 : "Violation of: this /= {}";
         return this.getTeamList().entry(0);
     }
 
@@ -68,6 +71,7 @@ public abstract class PowerRankingSecondary implements PowerRanking {
      */
     @Override
     public Team getLowestRanked() {
+        assert this.getTeamList().length() > 0 : "Violation of: this /= {}";
         return this.getTeamList().entry(this.getTeamList().length() - 1);
     }
 
@@ -340,10 +344,9 @@ public abstract class PowerRankingSecondary implements PowerRanking {
         if (this.getTeamList().length() != ranking.getTeamList().length()) {
             return false;
         }
-        Team.CompareTeams comparator = new Team.CompareTeams();
         for (int i = 0; i < ranking.getTeamList().length(); i++) {
-            if (!(comparator.compare(ranking.getTeamList().entry(i),
-                    this.getTeamList().entry(i)) == 0)) {
+            if (!this.getTeamList().entry(i)
+                    .equals(ranking.getTeamList().entry(i))) {
                 return false;
             }
         }
