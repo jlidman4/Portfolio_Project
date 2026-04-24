@@ -1,6 +1,7 @@
 
 /**
- * PowerRanking kernel component with primary methods.
+ * PowerRanking kernel component with primary methods. Ranks defined as integers from
+ * 1 at highest and |this| at lowest.
  */
 public interface PowerRankingKernel extends Standard<PowerRanking>, Iterable<Team> {
 
@@ -12,7 +13,7 @@ public interface PowerRankingKernel extends Standard<PowerRanking>, Iterable<Tea
      * @updates this
      * @requires t is not in {@code this}
      * @ensures t is in {@code this} and 
-     * [descending order of {@code this} is preserved}
+     * [descending order of {@code this} is preserved]
      */
     void addTeam(Team t);
 
@@ -25,7 +26,7 @@ public interface PowerRankingKernel extends Standard<PowerRanking>, Iterable<Tea
      * @requires {@code t} is in {@code this}
      * @ensures t is not in {@code this} and 
      * [descending order of {@code this} is preserved]
-     * and |{@code this}| = |#@code this| - 1
+     * and |{@code this}| = |{#@code this}| - 1
      *
      */
     void removeTeam(Team t);
