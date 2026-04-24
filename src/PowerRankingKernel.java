@@ -1,4 +1,7 @@
 
+/**
+ * PowerRanking kernel component with primary methods.
+ */
 public interface PowerRankingKernel extends Standard<PowerRanking> {
 
     /**
@@ -8,7 +11,8 @@ public interface PowerRankingKernel extends Standard<PowerRanking> {
      *            team to add to {@code this}.
      * @updates this
      * @requires t is not in {@code this}
-     * @ensures t is in {@code this}
+     * @ensures t is in {@code this} and 
+     * [descending order of {@code this} is preserved}
      */
     void addTeam(Team t);
 
@@ -18,9 +22,10 @@ public interface PowerRankingKernel extends Standard<PowerRanking> {
      * @param t
      *            team to remove from {@code this}.
      * @updates {@code this}
-     * @requires {@code t} is in {@code this}{
-     * @ensures t is not in #{@code this} and 
-     * [descending order of #{@code this} is preserved]
+     * @requires {@code t} is in {@code this}
+     * @ensures t is not in {@code this} and 
+     * [descending order of {@code this} is preserved]
+     * and |{@code this}| = |#@code this| - 1
      *
      */
     void removeTeam(Team t);
