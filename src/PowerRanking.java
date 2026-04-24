@@ -7,27 +7,31 @@ public interface PowerRanking extends PowerRankingKernel {
      *
      * @param t
      *            Team whose rank is to be returned
-     * @requires {@code this} /= {} and team is in {@code this}
      * @return rank of {@code t}, -1 if team is not found.
+     * @ensures getRank = [rank of t in this, where rank 1 is highest]
      */
     int getRank(Team t);
 
     /**
-     * Returns top n teams in {@code this}.
-     *
+     * Returns top {@code n} teams in {@code this}, 
+     * in descending order.
      * @param n
      *            Teams to be returned
-     * @requires n <= |this|
-     * @return Sequence containing top n teams in {@code this}
-     * @ensures |getTopN| = n and getTopN is subset of {@code this}
+     * @requires 0 <= n and n <= |this|
+     * @return Sequence containing top {@code n} teams in {@code this}
+     * @ensures |getTopN| = n and 
+     * getTopN is subset of {@code this} and 
+     * [getTopN in descending order] and 
+     * [all teams in returned Sequence<Team> are of higher ranks
+     * than those below top {@code n} teams] 
      */
     Sequence<Team> getTopN(int n);
 
     /**
      * Returns highest ranked team in {@code this}.
      *
-     * @requires {@code this} /= {}
-     * @return highest ranked team
+     * @requires {@code this} /= <>
+     * @return highest ranked team in {@code this}
      * @ensures getHighestRanked = [highest ranked team in {@code this}]
      */
     Team getHighestRanked();
@@ -35,23 +39,27 @@ public interface PowerRanking extends PowerRankingKernel {
     /**
      * Returns lowest ranked team in {@code this}.
      *
-     * @requires {@code this} /= {}
+     * @requires {@code this} /= <>
      * @return lowest ranked team
-     * @ensures getLowestRanked = [lowest ranked team in {@code this}]
+     * @ensures getLowestRanked is in this 
+      * and getLowestRanked = [lowest ranked team in {@code this}]
      */
     Team getLowestRanked();
 
     /**
-     * Sets rank of {@code t} in {@code this}.
+     * Sets rank of {@code t} in {@code this}, shifting 
+     * other teams' ranks to keep all ranks within range 
+     * [1, |this|].
      *
      * @param t
      *            Team whose rank is to be set
      * @param rank
      *            Rank of which team is to be set to
      * @updates {@code this}
-     * @ensures [team {@code t} has rank 'rank' in this]
-     * @requires {@code this} /= {} and team is in {@code this} and 1 <= rank <=
-     *           |{@code this}|
+     * @ensures {@code t} in this and 
+     * [for every team t' in this other than t, t' is in #this]  and
+     *     |this| = |#this|
+     * @requires team is in {@code this} and 1 <= rank <= |{@code this}|
      */
     void setRank(Team t, int rank);
 
@@ -82,7 +90,8 @@ public interface PowerRanking extends PowerRankingKernel {
      *
      * @requires this /= {}
      * @return Sequence<Team> representation of this.
-     * @ensures |orderedList| = |this| and orderedList is subset of this
+     * @ensures |orderedList| = |this| and [orderedList is subset of this]
+     * and [orderedList is in descending order]
      */
     Sequence<Team> orderedList();
 
