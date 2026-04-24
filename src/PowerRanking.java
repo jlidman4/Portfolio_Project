@@ -1,5 +1,7 @@
 import components.sequence.Sequence;
-
+/**
+ * PowerRanking component with secondary methods.
+ */
 public interface PowerRanking extends PowerRankingKernel {
 
     /**
