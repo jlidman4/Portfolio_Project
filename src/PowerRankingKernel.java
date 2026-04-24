@@ -6,6 +6,8 @@ public interface PowerRankingKernel {
      *
      * @param t
      *            team to add to {@code this}.
+     * @updates this
+     * @requires t is not in {@code this}
      * @ensures t is in {@code this}
      */
     void addTeam(Team t);
@@ -15,8 +17,10 @@ public interface PowerRankingKernel {
      *
      * @param t
      *            team to remove from {@code this}.
-     * @requires this /= {}
-     * @ensures t is not in {@code this}
+     * @updates {@code this}
+     * @requires {@code t} is in {@code this}{
+     * @ensures t is not in #{@code this} and 
+     * [descending order of #{@code this} is preserved]
      *
      */
     void removeTeam(Team t);
@@ -33,8 +37,8 @@ public interface PowerRankingKernel {
      * Reports whether {@code t} is in {@code this}.
      *
      * @param t
-     *            the element to be checked
-     * @return true if element is in {@code this}
+     *            the team to be checked for
+     * @return true if {@code t} is in {@code this}
      * @ensures hasTeam = (t is in this)
      */
     boolean hasTeam(Team t);
