@@ -1,5 +1,5 @@
 
-public interface PowerRankingKernel {
+public interface PowerRankingKernel extends Standard<PowerRanking> {
 
     /**
      * Adds a team to {@code this}.
