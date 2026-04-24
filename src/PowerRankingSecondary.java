@@ -1,4 +1,5 @@
 import components.sequence.Sequence;
+import components.sequence.Sequence1L;
 
 /**
  * Layered implementations of secondary methods for {@code PowerRanking}.
@@ -10,21 +11,45 @@ public abstract class PowerRankingSecondary implements PowerRanking {
      *
      * @param t
      *            Team whose rank is to be returned
-     * @requires {@code this} /= {} and team is in {@code this}
+     * @requires {@code this} /= {}
      * @return rank of {@code t}, -1 if team is not found.
      */
     @Override
     public int getRank(Team t) {
         assert t != null : "Violation of: t is not null";
-        assert this.getTeamList().length() > 0 : "Violation of: this /= {}";
-        assert this.hasTeam(t) : "Violation of: t is in this";
+        assert this.size() > 0 : "Violation of: this /= {}";
         int rank = -1;
-        for (int i = 0; i < this.getTeamList().length(); i++) {
-            if (this.getTeamList().entry(i).equals(t)) {
-                rank = i;
+        for (int i = 0; i < this.size(); i++) {
+            if (this.teamAtRank(i + 1).equals(t)) {
+                rank = i + 1;
             }
         }
         return rank;
+    }
+
+    /**
+     * Creates a copy of {@code this}.
+     *
+     * @return copy of Sequence<Team>
+     */
+    private Sequence<Team> copy() {
+        Sequence<Team> newSequence = new Sequence1L<>();
+        for (int i = 0; i < this.size(); i++) {
+            newSequence.add(i, this.teamAtRank(i + 1));
+        }
+        return newSequence;
+    }
+
+    /**
+     * Copies {@code this} from {@code newSequence}.
+     *
+     * @param newSequence
+     *            Sequence to be copied.
+     */
+    private void addBack(Sequence<Team> newSequence) {
+        for (int i = 0; i < newSequence.length(); i++) {
+            this.addTeam(newSequence.entry(i), i + 1);
+        }
     }
 
     /**
@@ -38,13 +63,13 @@ public abstract class PowerRankingSecondary implements PowerRanking {
      */
     @Override
     public Sequence<Team> getTopN(int n) {
-        Sequence<Team> newSequence = this.getTeamList().newInstance();
+        Sequence<Team> newSequence = new Sequence1L<>();
         int number = n;
-        if (number > this.getTeamList().length()) {
-            number = this.getTeamList().length();
+        if (number > this.size()) {
+            number = this.size();
         }
         for (int i = 0; i < number; i++) {
-            newSequence.add(newSequence.length(), this.getTeamList().entry(i));
+            newSequence.add(newSequence.length(), this.teamAtRank(i + 1));
         }
         return newSequence;
     }
@@ -58,8 +83,8 @@ public abstract class PowerRankingSecondary implements PowerRanking {
      */
     @Override
     public Team getHighestRanked() {
-        assert this.getTeamList().length() > 0 : "Violation of: this /= {}";
-        return this.getTeamList().entry(0);
+        assert this.size() > 0 : "Violation of: this /= {}";
+        return this.teamAtRank(1);
     }
 
     /**
@@ -71,8 +96,8 @@ public abstract class PowerRankingSecondary implements PowerRanking {
      */
     @Override
     public Team getLowestRanked() {
-        assert this.getTeamList().length() > 0 : "Violation of: this /= {}";
-        return this.getTeamList().entry(this.getTeamList().length() - 1);
+        assert this.size() > 0 : "Violation of: this /= {}";
+        return this.teamAtRank(this.size());
     }
 
     /**
@@ -91,16 +116,11 @@ public abstract class PowerRankingSecondary implements PowerRanking {
     public void setRank(Team t, int rank) {
         assert t != null : "Violation of: t is not null";
         assert 1 <= rank : "Violation of: rank less than 1";
-        assert rank <= this.getTeamList()
-                .length() : "Violation of: rank <= |this.getTeamList()|";
+        assert rank <= this.size() : "Violation of: rank <= |this|";
 
-        int position = this.getRank(t);
-        assert position != -1 : "Violation of: t exists in this.getTeamList()";
-        Sequence<Team> newSequence = this.getTeamList();
-        Team reAddedTeam = newSequence.remove(position);
-
-        newSequence.add(rank - 1, reAddedTeam);
-        this.setTeamList(newSequence);
+        int currentRank = this.getRank(t);
+        Team removed = this.removeTeam(currentRank);
+        this.addTeam(removed, rank);
 
     }
 
@@ -117,14 +137,11 @@ public abstract class PowerRankingSecondary implements PowerRanking {
     public void bumpUp(Team t) {
         assert t != null : "Violation of: t is not null";
         int position = this.getRank(t);
-        assert position != -1 : "Violation of: t exists in this.getTeamList()";
-        Sequence<Team> newSequence = this.getTeamList();
-        if (position > 0) {
-            newSequence.remove(position);
-            newSequence.add(position - 1, t);
+        assert position != -1 : "Violation of: t exists in this";
+        if (position > 1) {
+            Team removed = this.removeTeam(position);
+            this.addTeam(removed, position - 1);
         }
-        this.setTeamList(newSequence);
-
     }
 
     /**
@@ -141,13 +158,11 @@ public abstract class PowerRankingSecondary implements PowerRanking {
     public void bumpDown(Team t) {
         assert t != null : "Violation of: t is not null";
         int position = this.getRank(t);
-        assert position != -1 : "Violation of: t exists in this.getTeamList()";
-        Sequence<Team> newSequence = this.getTeamList();
-        if (position < (this.getTeamList().length() - 1)) {
-            Team removedTeam = newSequence.remove(position);
-            newSequence.add(position + 1, removedTeam);
+        assert position != -1 : "Violation of: t exists in this";
+        if (position < this.size()) {
+            Team removed = this.removeTeam(position);
+            this.addTeam(removed, position + 1);
         }
-        this.setTeamList(newSequence);
     }
 
     /**
@@ -233,18 +248,17 @@ public abstract class PowerRankingSecondary implements PowerRanking {
      *
      *
      * @requires this /= {}
-     * @ensures |this| = |#this| and and this is a permutation of #this in
+     * @ensures |this| = |#this| and this is a permutation of #this in
      *          descending rank order
      */
-
     @Override
     public void orderedList() {
-        Sequence<Team> newSequence = this.getTeamList();
-
-        if (this.getTeamList().length() > 1) {
+        Sequence<Team> newSequence = new Sequence1L<>();
+        newSequence = this.copy();
+        if (this.size() > 1) {
             this.sort(newSequence, 0, newSequence.length() - 1);
         }
-        this.setTeamList(newSequence);
+        this.addBack(newSequence);
     }
 
     /**
@@ -316,20 +330,42 @@ public abstract class PowerRankingSecondary implements PowerRanking {
                 + " Standings\n --------------------------\n");
     }
 
+    /**
+     * Returns a string representation of this [ClassName].
+     *
+     * <p>
+     * The format of this string is [describe format if it's a fixed contract].
+     * Otherwise, it is subject to change and should not be relied upon for
+     * parsing.
+     * </p>
+     *
+     * @return a string representation of the object.
+     */
     @Override
     public String toString() {
         StringBuilder message = new StringBuilder();
         message.append(this.writeHeader());
-        for (int i = 0; i < this.getTeamList().length(); i++) {
+        for (int i = 0; i < this.size(); i++) {
             StringBuilder sb = new StringBuilder();
             createStringFromRank(i + 1, sb);
             String rank = sb.toString();
-            message.append(
-                    rank + ": " + this.getTeamList().entry(i).name() + "\n");
+            message.append(rank + ": " + this.teamAtRank(i + 1).name() + "\n");
         }
         return message.toString();
     }
 
+    /**
+     * Evaluates and returns equality.
+     *
+     * Checks if both objects are defines as PowerRanking objects, compares
+     * sizes of each PowerRanking and sees if they are the same size or not,
+     * finally checks every team in {@code this} and every team in {@code obj}.
+     * If both {@code this} and {@code obj} are of the same PowerRanking object
+     * type, |{@code this}| = |{@code obj}|, and every Team in {@code this}
+     * equals every Team in {@code obj}, returns true. Otherwise, returns false.
+     *
+     * @return {@code this} == obj
+     */
     @Override
     public boolean equals(Object obj) {
         boolean areEqual = true;
@@ -341,24 +377,30 @@ public abstract class PowerRankingSecondary implements PowerRanking {
             return false;
         }
         PowerRanking ranking = (PowerRanking) obj;
-        if (this.getTeamList().length() != ranking.getTeamList().length()) {
+        if (this.size() != ranking.size()) {
             return false;
         }
-        for (int i = 0; i < ranking.getTeamList().length(); i++) {
-            if (!this.getTeamList().entry(i)
-                    .equals(ranking.getTeamList().entry(i))) {
+        for (int i = 0; i < ranking.size(); i++) {
+            if (!this.teamAtRank(i + 1).equals(ranking.teamAtRank(i + 1))) {
                 return false;
             }
         }
         return areEqual;
     }
 
+    /**
+     * Returns a hash code value for the object, intended for use in hash-based
+     * data structures.
+     *
+     * @return a hash code value for this object.
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
         final int hashNumber = 17;
         int hash = hashNumber;
-        Sequence<Team> list = this.getTeamList();
+        Sequence<Team> list = this.copy();
         for (int i = 0; i < list.length(); i++) {
             hash = prime * hash + list.entry(i).hashCode();
         }

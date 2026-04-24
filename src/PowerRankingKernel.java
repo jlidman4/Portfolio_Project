@@ -1,4 +1,3 @@
-import components.sequence.Sequence;
 import components.standard.Standard;
 
 /**
@@ -11,25 +10,15 @@ public interface PowerRankingKernel extends Standard<PowerRanking> {
      *
      * @param t
      *            team to add to {@code this}.
-     * @ensures t is in {@code this}
+     * @param rank
+     *            rank within {@code this} in which the team shall be placed
+     * @updates this
+     * @requires t is not in {@code this} and 1 <= {@code position} <=
+     *           |#{@code this}|
+     * @ensures t is in {@code this} and [descending order of {@code this} is
+     *          preserved]
      */
-    void addTeam(Team t);
-
-    /**
-     * Getter for {@code Sequence<Team>} representation of {@code this}.
-     *
-     * @return {@code Sequence<Team>} representation of {@code this}
-     */
-    Sequence<Team> getTeamList();
-
-    /**
-     * Setter for {@code Sequence<Team>} representation of {@code this}.
-     *
-     * @param teamList
-     *            New representation for {@code Sequence<Team>} representation
-     *            of {@code this}.
-     */
-    void setTeamList(Sequence<Team> teamList);
+    void addTeam(Team t, int rank);
 
     /**
      * Getter for league name of {@code this}.
@@ -49,15 +38,18 @@ public interface PowerRankingKernel extends Standard<PowerRanking> {
     void setLeagueName(String name);
 
     /**
-     * Removes a team from {@code this}.
+     * Removes a team from {@code this} at rank {@code rank}.
      *
-     * @param t
-     *            team to remove from {@code this}
-     * @requires {@code this} /= {}
-     * @ensures t is not in {@code this}
+     * @param rank
+     *            rank of team to remove from {@code this}.
+     * @updates {@code this}
+     * @return Team within {@code this} at rank {@code rank}
+     * @requires 0 <= {@code rank} <= |#{@code this}|
+     * @ensures t is not in {@code this} and [descending order of {@code this}
+     *          is preserved] and |{@code this}| = |#{@code this}| - 1
      *
      */
-    void removeTeam(Team t);
+    Team removeTeam(int rank);
 
     /**
      * Reports size of {@code this}.
@@ -71,10 +63,24 @@ public interface PowerRankingKernel extends Standard<PowerRanking> {
      * Reports whether {@code t} is in {@code this}.
      *
      * @param t
-     *            the element to be checked
-     * @return true if element is in {@code this}
+     *            the team to be checked for
+     * @return true if {@code t} is in {@code this}
      * @ensures hasTeam = (t is in this)
      */
     boolean hasTeam(Team t);
+
+    /**
+     * Returns a team from {@code this} at rank {@code rank} - 1.
+     *
+     * @param rank
+     *            rank of team to return from {@code this}.
+     * @updates {@code this}
+     * @return Team within {@code this} at rank {@code rank}
+     * @requires 0 <= {@code rank} <= |#{@code this}|
+     * @ensures t is in {@code this} and [descending order of {@code this} is
+     *          preserved] and |{@code this}| = |#{@code this}|
+     *
+     */
+    Team teamAtRank(int rank);
 
 }
