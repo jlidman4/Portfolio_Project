@@ -10,7 +10,8 @@ public interface PowerRanking extends PowerRankingKernel {
      * @param t
      *            Team whose rank is to be returned
      * @requires t is in {@code this}
-     * @return rank of {@code t}, -1 if team is not found.
+     * @ensures getRank = [rank of t in this]
+     * @return rank of {@code t}
      */
     int getRank(Team t);
 
@@ -59,7 +60,7 @@ public interface PowerRanking extends PowerRankingKernel {
      *            Rank of which team is to be set to
      * @updates {@code this}
      * @requires team is in {@code this} and 1 <= rank <= |{@code this}|
-     * @ensures {@code t} in this and 
+     * @ensures [{@code t} has rank 'rank' in this] and 
      * [for every team t' in this other than t, t' is in #this]  and
      *     |this| = |#this| 
      */
@@ -89,8 +90,6 @@ public interface PowerRanking extends PowerRankingKernel {
 
     /**
      * Returns Sequence<Team> representation of this.
-     *
-     * @requires this /= <>
      * @return Sequence<Team> representation of this.
      * @ensures |orderedList| = |this| and [orderedList is subset of this]
      * and [orderedList is in descending order]
