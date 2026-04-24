@@ -1,5 +1,10 @@
 import components.sequence.Sequence;
 
+/**
+ *
+ * PowerRanking component with secondary methods.
+ */
+
 public interface PowerRanking extends PowerRankingKernel {
 
     /**
@@ -7,8 +12,8 @@ public interface PowerRanking extends PowerRankingKernel {
      *
      * @param t
      *            Team whose rank is to be returned
-     * @requires this /= {} and team is in {@code this}
-     * @return rank of team
+     * @requires {@code this} /= {} and team is in {@code this}
+     * @return rank of {@code t}, -1 if team is not found.
      */
     int getRank(Team t);
 
@@ -19,38 +24,39 @@ public interface PowerRanking extends PowerRankingKernel {
      *            Teams to be returned
      * @requires n <= |this|
      * @return Sequence containing top n teams in {@code this}
-     * @ensures |getTopN| = n and getTopN is subset of this
+     * @ensures |getTopN| = n and getTopN is subset of {@code this}
      */
     Sequence<Team> getTopN(int n);
 
     /**
      * Returns highest ranked team in {@code this}.
      *
-     * @requires this /= {}
+     * @requires {@code this} /= {}
      * @return highest ranked team
-     * @ensures getHighestRanked = [highest ranked team in this]
+     * @ensures getHighestRanked = [highest ranked team in {@code this}]
      */
     Team getHighestRanked();
 
     /**
      * Returns lowest ranked team in {@code this}.
      *
-     * @requires this /= {}
+     * @requires {@code this} /= {}
      * @return lowest ranked team
-     * @ensures getLowestRanked = [lowest ranked team in this]
+     * @ensures getLowestRanked = [lowest ranked team in {@code this}]
      */
     Team getLowestRanked();
 
     /**
-     * Returns rank of team in {@code this}.
+     * Sets rank of {@code t} in {@code this}.
      *
      * @param t
      *            Team whose rank is to be set
      * @param rank
      *            Rank of which team is to be set to
-     * @updates this
-     * @ensures [team t has rank 'rank' in this]
-     * @requires this /= {} and team is in {@code this}
+     * @updates {@code this}
+     * @ensures [team {@code t} has rank 'rank' in this]
+     * @requires {@code this} /= {} and team is in {@code this} and 1 <= rank <=
+     *           |{@code this}|
      */
     void setRank(Team t, int rank);
 
@@ -59,9 +65,9 @@ public interface PowerRanking extends PowerRankingKernel {
      *
      * @param t
      *            Team whose rank is to be bumped up
-     * @updates this
-     * @requires this /= {} and team is in {@code this}
-     * @ensures team rank += 1
+     * @updates {@code this}
+     * @requires {@code this} /= {} and team is in {@code this}
+     * @ensures Team {@code t}'s rank += 1, if possible, else unchanged
      */
     void bumpUp(Team t);
 
@@ -70,19 +76,20 @@ public interface PowerRanking extends PowerRankingKernel {
      *
      * @param t
      *            Team whose rank is to be bumped down
-     * @updates this
-     * @requires this /= {} and team is in {@code this}
-     * @ensures team rank -= 1
+     * @updates {@code this}
+     * @requires {@code this} /= {} and team is in {@code this}
+     * @ensures team rank -= 1 if possible, else unchanged
      */
     void bumpDown(Team t);
 
     /**
-     * Returns Sequence<Team> representation of this.
+     * Sorts {@code this} in descending rank order.
+     *
      *
      * @requires this /= {}
-     * @return Sequence<Team> representation of this.
-     * @ensures |orderedList| = |this| and orderedList is subset of this
+     * @ensures |this| = |#this| and this is a permutation of #this in
+     *          descending rank order
      */
-    Sequence<Team> orderedList();
+    void orderedList();
 
 }

@@ -12,6 +12,60 @@ the following form: YYYY.0M.0D.
 - Fixed broken links
 - Disabled AI features globally
 
+
+## [2026.04.23]
+
+### Added
+
+- Designed abstract class for PowerRanking component
+
+### Updated
+
+- Team.java design to include multiple overloaded constructors, each taking
+  a different set of variables as parameters of those new variables listed
+  below
+- Team.java design to include wins, ties, and losses maps for head-to-head
+  comparison
+- Team.java design to include variable int goalDifference to keep track of a
+  team's goal difference
+- Team.java design to include getters for variables mentioned above
+- Team.java design to include a comparator class for teams, overriding
+  java.util.Object compare() method
+- Team.java design to override java.util.Object equals() and hashCode() methods
+- PowerRankingKernel design changed, adding the following getters and setters:
+  getTeamList(), setTeamList(), getLeagueName(), setLeagueName()
+- PowerRanking's orderedList() method to be void instead of type Sequence<Team>
+
+## Removed
+
+- PowerRankingSample.java file, no longer needed as it provided a
+  "proof of concept"
+
+## [2026.02.27]
+
+### Added
+
+- Designed a proof of concept for PowerRanking component
+- PowerRanking.java file containing the code for the proof of concept
+- Team.java file with constructors for the team object
+
+### Updated
+
+- Changed design to include addTeam() method
+- Changed design to include removeTeam() method
+- Changed design to include hasTeam() method
+- Changed design to include getHighestRanked() method
+- Changed design to include size() method
+- Changed design to include main method
+
+## [2026.02.07]
+
+### Added
+
+- Designed a library component
+- Designed a JSON parsing component
+- Designed a power ranking component
+
 ## [2024.12.30]
 
 - Added table-based rubrics to all 6 parts of the project
@@ -77,27 +131,6 @@ the following form: YYYY.0M.0D.
 - Created a README at the root to explain how to use the template repo
 - Created initial drafts of the six portfolio assessments
 - Added READMEs to key folders like `test` and `lib` to explain their purpose
-## [2026.02.07]
-### Added
-- Designed a library component
-- Designed a JSON parsing component
-- Designed a power ranking component
-## [2026.02.27]
-
-### Added
-- Designed a proof of concept for PowerRanking component
-- PowerRanking.java file containing the code for the proof of concept
-- Team.java file with constructors for the team object
-### Updated
-
-- Changed design to include addTeam() method
-- Changed design to include removeTeam() method
-- Changed design to include hasTeam() method
-- Changed design to include getHighestRanked() method
-- Changed design to include size() method
-- Changed design to include main method
-
-
 
 [unreleased]: https://github.com/jrg94/portfolio-project/compare/v2024.08.07...HEAD
 [2024.08.07]: https://github.com/jrg94/portfolio-project/compare/v2024.01.07...v2024.08.07
