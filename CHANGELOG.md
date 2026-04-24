@@ -12,6 +12,15 @@ the following form: YYYY.0M.0D.
 - Fixed broken links
 - Disabled AI features globally
 
+## [2026.04.24]
+### Added
+
+- Kernel implementation class for PowerRanking component
+
+### Updated
+
+- PowerRankingKernel.java to remove getters and setters for teamList
+- Fixed bugs found in PowerRankingSecondary.java
 
 ## [2026.04.23]
 
