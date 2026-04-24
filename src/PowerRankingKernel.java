@@ -2,7 +2,7 @@
 /**
  * PowerRanking kernel component with primary methods.
  */
-public interface PowerRankingKernel extends Standard<PowerRanking> {
+public interface PowerRankingKernel extends Standard<PowerRanking>, Iterable<Team> {
 
     /**
      * Adds a team to {@code this}.
