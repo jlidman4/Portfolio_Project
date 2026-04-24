@@ -7,8 +7,8 @@ public interface PowerRanking extends PowerRankingKernel {
      *
      * @param t
      *            Team whose rank is to be returned
+     * @requires t is in {@code this}
      * @return rank of {@code t}, -1 if team is not found.
-     * @ensures getRank = [rank of t in this, where rank 1 is highest]
      */
     int getRank(Team t);
 
@@ -56,10 +56,10 @@ public interface PowerRanking extends PowerRankingKernel {
      * @param rank
      *            Rank of which team is to be set to
      * @updates {@code this}
+     * @requires team is in {@code this} and 1 <= rank <= |{@code this}|
      * @ensures {@code t} in this and 
      * [for every team t' in this other than t, t' is in #this]  and
-     *     |this| = |#this|
-     * @requires team is in {@code this} and 1 <= rank <= |{@code this}|
+     *     |this| = |#this| 
      */
     void setRank(Team t, int rank);
 
@@ -69,8 +69,8 @@ public interface PowerRanking extends PowerRankingKernel {
      * @param t
      *            Team whose rank is to be bumped up
      * @updates {@code this}
-     * @requires {@code this} /= {} and team is in {@code this}
-     * @ensures Team {@code t}'s rank += 1, if possible, else unchanged
+     * @requires {@code this} /= <> and team is in {@code this}
+     * @ensures Team {@code t}'s rank -= 1, if possible, else unchanged
      */
     void bumpUp(Team t);
 
@@ -80,15 +80,15 @@ public interface PowerRanking extends PowerRankingKernel {
      * @param t
      *            Team whose rank is to be bumped down
      * @updates {@code this}
-     * @requires {@code this} /= {} and team is in {@code this}
-     * @ensures team rank -= 1 if possible, else unchanged
+     * @requires {@code this} /= <> and team is in {@code this}
+     * @ensures team rank += 1 if possible, else unchanged
      */
     void bumpDown(Team t);
 
     /**
      * Returns Sequence<Team> representation of this.
      *
-     * @requires this /= {}
+     * @requires this /= <>
      * @return Sequence<Team> representation of this.
      * @ensures |orderedList| = |this| and [orderedList is subset of this]
      * and [orderedList is in descending order]
