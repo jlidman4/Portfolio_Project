@@ -1,3 +1,4 @@
+
 import components.sequence.Sequence;
 import components.sequence.Sequence1L;
 
@@ -13,7 +14,7 @@ import components.sequence.Sequence1L;
  * @correspondence this = (teams: this.teamList, name: this.leagueName) where
  *                 the team at this.teamList.entry(i) has rank i + 1
  */
-final class PowerRankingOnSequence extends PowerRankingSecondary {
+public final class PowerRankingOnSequence extends PowerRankingSecondary {
     /**
      * {@code Sequence<Team>} representation for {@code this}.
      */
@@ -33,7 +34,7 @@ final class PowerRankingOnSequence extends PowerRankingSecondary {
      * @param name
      *            Name of league associated with {@code this}.
      */
-    PowerRankingOnSequence(Sequence<Team> teamList, String name) {
+    public PowerRankingOnSequence(Sequence<Team> teamList, String name) {
         this.teamList = teamList;
         this.leagueName = name;
     }
@@ -53,7 +54,7 @@ final class PowerRankingOnSequence extends PowerRankingSecondary {
      *            {@code Sequence<Team>} representation for {@code this}.
      *
      */
-    PowerRankingOnSequence(Sequence<Team> teamList) {
+    public PowerRankingOnSequence(Sequence<Team> teamList) {
         this.teamList = teamList;
         this.leagueName = "";
     }
@@ -64,7 +65,7 @@ final class PowerRankingOnSequence extends PowerRankingSecondary {
      * @param name
      *            Name of league associated with {@code this}.
      */
-    PowerRankingOnSequence(String name) {
+    public PowerRankingOnSequence(String name) {
         this.createNewRep();
         this.leagueName = name;
     }
@@ -72,7 +73,7 @@ final class PowerRankingOnSequence extends PowerRankingSecondary {
     /**
      * Constructor for PowerRankingOnSequence.
      */
-    PowerRankingOnSequence() {
+    public PowerRankingOnSequence() {
         this.createNewRep();
     }
 

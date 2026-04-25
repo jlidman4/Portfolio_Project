@@ -1,0 +1,463 @@
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import components.sequence.Sequence;
+import static org.junit.Assert.assertNotEquals;
+import org.junit.Test;
+/**
+ * JUnit test fixture for {@code PowerRanking}'s secondary methods.
+ *
+ * Tests are written against the {@code PowerRanking} interface.
+ */
+
+public class PowerRankingSecondaryTest {
+    /**
+     * Returns a new instance of {@code PowerRanking} for testing.
+     *
+     * @return new, empty instance of PowerRanking
+     */
+    private PowerRanking constructorTest() {
+        return new PowerRankingOnSequence();
+    }
+    /**
+     * Returns a new instance of {@code PowerRanking} for testing with a given
+     * league name {@code name}.
+     *
+     * @param name
+     *            league name
+     * @return new, empty instance of PowerRanking with given {@code name}
+     */
+    private PowerRanking constructorTestWithName(String name) {
+        return new PowerRankingOnSequence(name);
+    }
+     /**
+     * Constant representing the number one.
+     */
+     private final int zero = 0;
+     /**
+      * Constant representing the number one.
+      */
+     private final int one = 1;
+     /**
+      * Constant representing the number two.
+      */
+     private final int two = 2;
+     /**
+      * Constant representing the number three.
+      */
+     private final int three = 3;
+     /**
+      * Constant representing the number four.
+      */
+     private final int four = 4;
+
+
+    /*Tests for getRank() */
+
+    /**
+     * Test for getRank() with team present.
+     */
+    @Test
+    public void testGetRankPresent() {
+        PowerRanking pr = this.constructorTest();
+        Team a = new Team("AIK");
+        Team b = new Team("Mjallby");
+        pr.addTeam(a, this.one);
+        pr.addTeam(b, this.two);
+        assertEquals(this.one, pr.getRank(a));
+        assertEquals(this.two, pr.getRank(b));
+    }
+    /**
+     * Test for getRank() with team not present.
+     */
+    @Test
+    public void testGetRankAbsent() {
+        PowerRanking pr = this.constructorTest();
+        pr.addTeam(new Team("AIK"), this.one);
+        assertEquals(-this.one, pr.getRank(new Team("Hammarby")));
+    }
+
+    /*Tests for getHighestRanked() */
+
+    /**
+     * Test for getHighestRanked() with one team  present.
+     */
+    @Test
+    public void testGetHighestRankedSingle() {
+        PowerRanking pr = this.constructorTest();
+        Team a = new Team("AIK");
+        pr.addTeam(a, this.one);
+        assertEquals(a, pr.getHighestRanked());
+    }
+    /**
+     * Test for getHighestRanked() with multiple teams present.
+     */
+    @Test
+    public void testGetHighestRankedMultiple() {
+        PowerRanking pr = this.constructorTest();
+        Team a = new Team("AIK");
+        Team b = new Team("Mjallby");
+        Team c = new Team("Elfsborg");
+        pr.addTeam(a, this.one);
+        pr.addTeam(b, this.two);
+        pr.addTeam(c, this.three);
+        assertEquals(a, pr.getHighestRanked());
+    }
+    /**
+     * Test for getHighestRanked() with multiple teams present,
+     * tests that getHighestRanked does not mutate original PowerRanking object
+     */
+    @Test
+    public void testGetHighestRankedNonDestructive() {
+        PowerRanking pr = this.constructorTest();
+        pr.addTeam(new Team("AIK"), this.one);
+        pr.addTeam(new Team("Mjallby"), this.two);
+        pr.getHighestRanked();
+        assertEquals(this.two, pr.size());
+    }
+
+    /*Tests for getLowestRanked */
+
+    /**
+     * Test for getLowestRanked() with PowerRanking with one object.
+     */
+
+    @Test
+    public void testGetLowestRankedSingle() {
+        PowerRanking pr = this.constructorTest();
+        Team a = new Team("AIK");
+        pr.addTeam(a, this.one);
+        assertEquals(a, pr.getLowestRanked());
+    }
+
+    /**
+     * Test for getLowestRanked() with PowerRanking with multiple objects.
+     */
+    @Test
+    public void testGetLowestRankedMultiple() {
+        PowerRanking pr = this.constructorTest();
+        Team a = new Team("AIK");
+        Team b = new Team("Mjallby");
+        Team c = new Team("Elfsborg");
+        pr.addTeam(a, this.one);
+        pr.addTeam(b, this.two);
+        pr.addTeam(c, this.three);
+        assertEquals(c, pr.getLowestRanked());
+    }
+
+    /**
+     * Test for getLowestRanked() with PowerRanking with multiple objects.
+     */
+
+    @Test
+    public void testSetRankSamePosition() {
+        PowerRanking pr = this.constructorTest();
+        Team a = new Team("AIK");
+        Team b = new Team("Mjallby");
+        pr.addTeam(a, this.one);
+        pr.addTeam(b, this.two);
+        pr.setRank(a, this.one);
+        assertEquals(a, pr.teamAtRank(this.one));
+        assertEquals(b, pr.teamAtRank(this.two));
+    }
+
+    /*Tests for setRank() */
+
+    /**
+     * Test for setRank(), reshuffling PowerRanking such that the team that is
+     * called in "setRank" is moved down.
+     */
+    @Test
+    public void testSetRankMoveDown() {
+        PowerRanking pr = this.constructorTest();
+        Team a = new Team("AIK");
+        Team b = new Team("Mjallby");
+        Team c = new Team("Elfsborg");
+        pr.addTeam(a, this.one);
+        pr.addTeam(b, this.two);
+        pr.addTeam(c, this.three);
+        pr.setRank(a, this.three);
+        assertEquals(this.three, pr.size());
+        assertEquals(a, pr.teamAtRank(this.three));
+    }
+
+    /**
+     * Test for setRank(), reshuffling PowerRanking such that the team that is
+     * called in "setRank" is moved up.
+     */
+    @Test
+    public void testSetRankMoveUp() {
+        PowerRanking pr = this.constructorTest();
+        Team a = new Team("AIK");
+        Team b = new Team("Mjallby");
+        Team c = new Team("Elfsborg");
+        pr.addTeam(a, this.one);
+        pr.addTeam(b, this.two);
+        pr.addTeam(c, this.three);
+        pr.setRank(c, this.one);
+        assertEquals(this.three, pr.size());
+        assertEquals(c, pr.teamAtRank(this.one));
+    }
+
+    /*Tests for bumpUp()*/
+
+    /**
+     * Test for bumpUp(), reshuffling PowerRanking such that the middle team is bumped up.
+     */
+    @Test
+    public void testBumpUpFromMiddle() {
+        PowerRanking pr = this.constructorTest();
+        Team a = new Team("AIK");
+        Team b = new Team("Mjallby");
+        Team c = new Team("Elfsborg");
+        pr.addTeam(a, this.one);
+        pr.addTeam(b, this.two);
+        pr.addTeam(c, this.three);
+        pr.bumpUp(b);
+        assertEquals(b, pr.teamAtRank(this.one));
+        assertEquals(a, pr.teamAtRank(this.two));
+        assertEquals(c, pr.teamAtRank(this.three));
+    }
+
+    /**
+     * Test for bumpUp() on top ranked team, testing that PowerRanking object's
+     * top ranked team is unchanged from before.
+     */
+    @Test
+    public void testBumpUpFromTopUnchanged() {
+        PowerRanking pr = this.constructorTest();
+        Team a = new Team("AIK");
+        Team b = new Team("Mjallby");
+        pr.addTeam(a, this.one);
+        pr.addTeam(b, this.two);
+        pr.bumpUp(a);
+        assertEquals(a, pr.teamAtRank(this.one));
+        assertEquals(b, pr.teamAtRank(this.two));
+    }
+
+    /*Tests for bumpDown() */
+
+    /**
+     * Test for bumpUp(), reshuffling PowerRanking such that the middle team is
+     * bumped down.
+     */
+    @Test
+    public void testBumpDownFromMiddle() {
+        PowerRanking pr = this.constructorTest();
+        Team a = new Team("AIK");
+        Team b = new Team("Mjallby");
+        Team c = new Team("Elfsborg");
+        pr.addTeam(a, this.one);
+        pr.addTeam(b, this.two);
+        pr.addTeam(c, this.three);
+        pr.bumpDown(b);
+        assertEquals(a, pr.teamAtRank(this.one));
+        assertEquals(c, pr.teamAtRank(this.two));
+        assertEquals(b, pr.teamAtRank(this.three));
+    }
+    /**
+     * Test for bumpDown() on top bottom team, testing that PowerRanking object's
+     * top bottom ranked team is unchanged from before.
+     */
+    @Test
+    public void testBumpDownFromBottomUnchanged() {
+        PowerRanking pr = this.constructorTest();
+        Team a = new Team("AIK");
+        Team b = new Team("Mjallby");
+        pr.addTeam(a, this.one);
+        pr.addTeam(b, this.two);
+        pr.bumpDown(b);
+        assertEquals(a, pr.teamAtRank(this.one));
+        assertEquals(b, pr.teamAtRank(this.two));
+    }
+
+    /*Tests for getTopN() */
+
+    /**
+     * Test for getTopN() when PowerRanking object is empty.
+     */
+    @Test
+    public void testGetTopNZero() {
+        PowerRanking pr = this.constructorTest();
+        pr.addTeam(new Team("AIK"), this.one);
+        Sequence<Team> top = pr.getTopN(this.zero);
+        assertEquals(this.zero, top.length());
+    }
+     /**
+     * Test for getTopN() when called on all teams in PowerRanking object.
+     */
+    @Test
+    public void testGetTopNAll() {
+        PowerRanking pr = this.constructorTest();
+        Team a = new Team("AIK");
+        Team b = new Team("Mjallby");
+        pr.addTeam(a, this.one);
+        pr.addTeam(b, this.two);
+        Sequence<Team> top = pr.getTopN(this.two);
+        assertEquals(this.two, top.length());
+        assertEquals(a, top.entry(this.zero));
+        assertEquals(b, top.entry(this.one));
+    }
+
+    /**
+     * Test for getTopN() when called on a subset of all teams in PowerRanking
+     * object.
+     */
+    @Test
+    public void testGetTopNPartial() {
+        PowerRanking pr = this.constructorTest();
+        Team a = new Team("AIK");
+        Team b = new Team("Mjallby");
+        Team c = new Team("Elfsborg");
+        pr.addTeam(a, this.one);
+        pr.addTeam(b, this.two);
+        pr.addTeam(c, this.three);
+        Sequence<Team> top = pr.getTopN(this.two);
+        assertEquals(this.two, top.length());
+        assertEquals(a, top.entry(this.zero));
+        assertEquals(b, top.entry(this.one));
+    }
+
+    /**
+     * Test for getTopN(), testing that call does not modify original state of
+     * PowerRanking object.
+     */
+    @Test
+    public void testGetTopNNonDestructive() {
+        PowerRanking pr = this.constructorTest();
+        pr.addTeam(new Team("AIK"), this.one);
+        pr.addTeam(new Team("Mjallby"), this.two);
+        pr.getTopN(this.one);
+        assertEquals(this.two, pr.size());
+    }
+
+    /*
+     * Tests for equals()
+     */
+
+    /**
+     * Test for equals(), testing PowerRanking object against itself while empty.
+     */
+    @Test
+    public void testEqualsReflexiveEmpty() {
+        PowerRanking pr = this.constructorTest();
+        assertEquals(pr, pr);
+    }
+
+    /**
+     * Test for equals(), testing against two empty PowerRanking objects.
+     */
+    @Test
+    public void testEqualsTwoEmpty() {
+        PowerRanking pone = this.constructorTest();
+        PowerRanking ptwo = this.constructorTest();
+        assertEquals(pone, ptwo);
+    }
+    /**
+     * Test for equals(), testing against two PowerRanking objects containing
+     * same team.
+     */
+    @Test
+    public void testEqualsSameContents() {
+        PowerRanking pone = this.constructorTest();
+        PowerRanking ptwo = this.constructorTest();
+        pone.addTeam(new Team("AIK"), this.one);
+        pone.addTeam(new Team("Mjallby"), this.two);
+        ptwo.addTeam(new Team("AIK"), this.one);
+        ptwo.addTeam(new Team("Mjallby"), this.two);
+        assertEquals(pone, ptwo);
+    }
+
+    /**
+     * Test for equals(), testing against two PowerRanking objects with differing sizes.
+     */
+    @Test
+    public void testEqualsDifferentSizes() {
+        PowerRanking pone = this.constructorTest();
+        PowerRanking ptwo = this.constructorTest();
+        pone.addTeam(new Team("AIK"), this.one);
+        assertNotEquals(pone, ptwo);
+    }
+
+    /**
+     * Test for equals(), testing against two PowerRanking objects with differing order of teams.
+     */
+    @Test
+    public void testEqualsDifferentOrder() {
+        PowerRanking pone = this.constructorTest();
+        PowerRanking ptwo = this.constructorTest();
+        Team a = new Team("AIK");
+        Team b = new Team("Mjallby");
+        pone.addTeam(a, this.one);
+        pone.addTeam(b, this.two);
+        ptwo.addTeam(b, this.one);
+        ptwo.addTeam(a, this.two);
+        assertNotEquals(pone, ptwo);
+    }
+
+
+
+    /*Tests for hashCode() */
+
+    /**
+     * Test for hashCode(), testing consistency of hashCodes by calling
+     * hashCode() on the same object twice and checking if the same output is
+     * produced
+     */
+    @Test
+    public void testHashCodeConsistent() {
+        PowerRanking pr = this.constructorTest();
+        pr.addTeam(new Team("AIK"), this.one);
+        int hone = pr.hashCode();
+        int htwo = pr.hashCode();
+        assertEquals(hone, htwo);
+    }
+
+    /**
+     * Test for hashCode(), testing if equal objects produce equal hash codes.
+     */
+    @Test
+    public void testHashCodeEqualObjectsEqualHashes() {
+        PowerRanking pone = this.constructorTest();
+        PowerRanking ptwo = this.constructorTest();
+        pone.addTeam(new Team("AIK"), this.one);
+        ptwo.addTeam(new Team("AIK"), this.one);
+        assertEquals(pone.hashCode(), ptwo.hashCode());
+    }
+
+    /*
+     * Scenario tests
+     */
+
+    @Test
+    public void testAddRemoveAddRoundTrip() {
+        PowerRanking pr = this.constructorTest();
+        Team a = new Team("AIK");
+        pr.addTeam(a, this.one);
+        Team removed = pr.removeTeam(this.one);
+        pr.addTeam(removed, this.one);
+        assertEquals(this.one, pr.size());
+        assertEquals(a, pr.teamAtRank(this.one));
+    }
+
+    @Test
+    public void testFullSeasonScenario() {
+        PowerRanking pr = this.constructorTestWithName("Allsvenskan");
+        Team a = new Team("AIK");
+        Team b = new Team("Mjallby");
+        Team c = new Team("Elfsborg");
+        Team d = new Team("Liverpool");
+        pr.addTeam(a, this.one);
+        pr.addTeam(b, this.two);
+        pr.addTeam(c, this.three);
+        pr.addTeam(d, this.four);
+        pr.setRank(d, this.one);
+        assertEquals(d, pr.getHighestRanked());
+        pr.bumpDown(b);
+        assertEquals(this.four, pr.size());
+        assertTrue(pr.hasTeam(a));
+        assertTrue(pr.hasTeam(b));
+        assertTrue(pr.hasTeam(c));
+        assertTrue(pr.hasTeam(d));
+        assertEquals("Allsvenskan", pr.getLeagueName());
+    }
+}
