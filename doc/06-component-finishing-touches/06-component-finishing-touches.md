@@ -1,8 +1,8 @@
 # Portfolio Part 6: Finishing Touches
 
-- **Name**: <!-- TODO: fill with first and last name (e.g., Brutus Buckeye) and delete this comment -->
-- **Dot Number**: <!-- TODO: fill with OSU dot number (e.g., buckeye.17) and delete this comment -->
-- **Due Date**: <!-- TODO: fill out with due date and time (e.g., 10/17 @ 3:10 PM EST) and delete this comment -->
+- **Name**: Jonas Fredriksson-Lidman
+- **Dot Number**: fredriksson-lidman.1
+- **Due Date**:
 
 ## Assignment Overview
 
@@ -307,18 +307,18 @@ Take some time to fill them out honestly.
 > complete the portfolio project, how much better (or worse) do you think you
 > understand software development and why?
 
-<!-- TODO: discuss -->
+I would not say that I understand how software development works in the real world any better than I did before the project - this is not due to how the portfolio project is structured but rather how I have already done similar projects in the past. I would say a student who has not had this experience would certainly gain such an understanding to a greater degree than they had before - however, I would not say in my case that I have gained a significantly greater understanding of how software development works.
 
 > Also, did the portfolio project surface any gaps in your own knowledge of
 > software development. If so, what are those gaps and how did you address them?
 
-<!-- TODO: discuss -->
+The portfolio project most definitely surfaced gaps in my knowledge of software development. Although I had used a lot of these skills during my CS related classes in high school, I had already gone through all the CS courses that my high school offered by my junior year - and so because I was not able to enroll in any CS courses my senior year I took essentially a "gap year" from coding, which caused me to forget a lot of things I had learned in these CS courses. Through this project, I was able to refresh a lot of the skills I had lost during my senior year of high school.
 
 > Finally, as a part of completing the portfolio project, to what extent has
 > your perspective of software development changed, if at all? In other words,
 > is software development something you still enjoy? If not, why not?
 
-<!-- TODO: discuss -->
+If someone came up to me and asked me if I had enjoyed software development before the portfolio project - I would certainly have not given a straight answer. Now, I can confidently say that I enjoy software development.
 
 > One of the challenges of completing the portfolio project is picking up a lot
 > of skills on your own. Some of these skills are, of course, software skills.
@@ -326,29 +326,28 @@ Take some time to fill them out honestly.
 > this process. Therefore, the first question is what skills did you pick up
 > through this process?
 
-<!-- TODO: discuss -->
+I would say that I gained further experience in developing skills that are important in the industry - such as a proficient use of GitHub. Additionally, being able to document properly - something I had a pretty severe incapability of doing before - is something I also picked up over the course of this project.
 
 > The follow-up question is: could you rephrase these skills you picked up
 > as bullet points that you could put on a resume? Try it below.
 
-<!-- TODO: discuss -->
+- Gained experience working with GitHub.
+- Gained experience in documenting self-made component.
 
 > Next, how has working on this project affected your career trajectory?
 > In other words, do you now hate the topic you picked? Or, are you even more
 > interested in it? Both outcomes are valuable to your personal development.
 
-<!-- TODO: discuss -->
+This project has not affected my career trajectory all that much - although I would say with confidence that this project definitely made me more interested in software development, my future in software development still is dependent on whether or not I get into Swedish universities for the next semester, of which I did not apply to any as a CS major.
 
 > Finally, consider the skills you've picked up and your current career
 > trajectory. What are some things you could do to continue on your
 > career trajectory? Also, who are some mentors you could contact to help
 > you stay on your path?
 
-<!-- TODO: discuss -->
+In order to stay on my current career trajectory, I should continue working on those personal projects that I have begun working on over the past few months. Additionally, I could use the CSE majors in my research lab as mentors.
 
 ### Changelog
-
-<!-- TODO: update CHANGELOG then delete this comment -->
 
 At the end of every assignment, you should update the
 [CHANGELOG.md](../../CHANGELOG.md) file found in the root of the project folder.

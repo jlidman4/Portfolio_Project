@@ -1,14 +1,16 @@
+
 import java.util.Comparator;
 
 import components.map.Map;
 import components.map.Map1L;
 import components.sequence.Sequence;
+import components.sequence.Sequence1L;
 
 /**
  * Class declaring the creation of a Team object, creates a representation for a
  * sports team.
  */
-final class Team {
+public final class Team {
 
     /**
      * Name of team.
@@ -63,7 +65,7 @@ final class Team {
      *            {@code Sequence<Team>} of opponents
      */
 
-    Team(String name, int points, Map<Team, Integer> wins,
+    public Team(String name, int points, Map<Team, Integer> wins,
             Map<Team, Integer> ties, Map<Team, Integer> losses,
             int goalDifference, Sequence<Team> opponents) {
         this.name = name;
@@ -85,7 +87,7 @@ final class Team {
      * @param opponents
      *            {@code Sequence<Team> } of opponents
      */
-    Team(String name, int points, Sequence<Team> opponents) {
+    public Team(String name, int points, Sequence<Team> opponents) {
         Map<Team, Integer> headToHeadWins = new Map1L<Team, Integer>();
         Map<Team, Integer> headToHeadTies = new Map1L<Team, Integer>();
         Map<Team, Integer> headToHeadLosses = new Map1L<Team, Integer>();
@@ -111,7 +113,7 @@ final class Team {
      * @param opponents
      *            {@code Sequence<Team>} of opponents
      */
-    Team(String name, Sequence<Team> opponents) {
+    public Team(String name, Sequence<Team> opponents) {
 
         Map<Team, Integer> headToHeadWins = new Map1L<Team, Integer>();
         Map<Team, Integer> headToHeadTies = new Map1L<Team, Integer>();
@@ -128,6 +130,27 @@ final class Team {
         this.losses = headToHeadLosses;
         this.goalDifference = 0;
         this.opponents = opponents;
+    }
+
+    /**
+     * Team constructor.
+     *
+     * @param name
+     *            Name of team.
+     */
+    public Team(String name) {
+
+        Map<Team, Integer> headToHeadWins = new Map1L<Team, Integer>();
+        Map<Team, Integer> headToHeadTies = new Map1L<Team, Integer>();
+        Map<Team, Integer> headToHeadLosses = new Map1L<Team, Integer>();
+        Sequence<Team> newOpponents = new Sequence1L<>();
+        this.name = name;
+        this.points = 0;
+        this.wins = headToHeadWins;
+        this.ties = headToHeadTies;
+        this.losses = headToHeadLosses;
+        this.goalDifference = 0;
+        this.opponents = newOpponents;
     }
 
     /**
@@ -201,6 +224,8 @@ final class Team {
     static final class CompareTeams implements Comparator<Team> {
         @Override
         public int compare(Team first, Team second) {
+            assert first != null;
+            assert second != null;
             int toReturn = 0;
             if (first.points() != second.points()) {
                 toReturn = second.points() - first.points();

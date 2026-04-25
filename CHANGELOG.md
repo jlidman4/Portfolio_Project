@@ -13,6 +13,21 @@ the following form: YYYY.0M.0D.
 - Disabled AI features globally
 
 ## [2026.04.24]
+
+### Added
+
+- AllsvenskanSimulator.java and MultiLeagueTracker.java use cases
+- Test cases PowerRankingOnSequenceTest and PowerRankingSecondaryTest.java
+
+## Updated
+- Team.java to include another constructor taking only a String name.
+
+### Updated
+
+- PowerRankingKernel.java to remove getters and setters for teamList
+- Fixed bugs found in PowerRankingSecondary.java
+
+## [2026.04.24]
 ### Added
 
 - Kernel implementation class for PowerRanking component
